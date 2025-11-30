@@ -1,0 +1,20 @@
+{% extends "note.html" %}
+{% block content %}
+
+<div class="card border-primary w-50 mx-auto">
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('update_note', id=note.id )}}">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input class="form-control" id="title" name="title"  value="{{ note.title }}">
+            </div>
+            <div class="mb-3">
+                <label for="full_name" class="form-label">FullName</label>
+                <input class="form-control" id="full_name" name="full_name"  value="{{ note.full_name }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

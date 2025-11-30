@@ -10,8 +10,8 @@ class NoteService():
     def get_note_all(self):
         return self.repositoty.get_note_all()
     
-    def add_note(self, title: str, full_name: str):
-        note = NoteModel(title=title, full_name=full_name)
+    def add_note(self, note_schema):
+        note = NoteModel(title=note_schema.title, full_name=note_schema.full_name)
         note_repository.add_note(note)
 
     def delete_note(self, id: int):
@@ -19,5 +19,8 @@ class NoteService():
 
     def update_note(self, id: int, update_data: NoteSchema):
         note_repository.update_note(id, update_data)
+
+    def get_note_by_id(self, id: int) -> NoteModel:
+        return note_repository.get_note_by_id(id)
 
 note_service = NoteService(note_repository)
