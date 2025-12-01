@@ -3,8 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.models.base_model import BaseModel
+from config import settings
 
-engine = create_engine("postgresql+psycopg2://postgres:root@127.0.0.20:5432/test_db")
+engine = create_engine(settings.DATABASE_URI)
 Session = sessionmaker(engine)
 
 def create_db_and_tables():
