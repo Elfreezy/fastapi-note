@@ -11,7 +11,7 @@ class NoteService():
         return self.repositoty.get_note_all()
     
     def add_note(self, note_schema):
-        note = NoteModel(title=note_schema.title, full_name=note_schema.full_name)
+        note = NoteModel(title=note_schema.title, note_description=note_schema.note_description)
         note_repository.add_note(note)
 
     def delete_note(self, id: int):

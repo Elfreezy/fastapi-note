@@ -9,8 +9,14 @@
                 <input class="form-control" id="title" name="title"  value="{{ note.title }}">
             </div>
             <div class="mb-3">
-                <label for="full_name" class="form-label">FullName</label>
-                <input class="form-control" id="full_name" name="full_name"  value="{{ note.full_name }}">
+                <label for="note_description" class="form-label">Description</label>
+                <input class="form-control" id="note_description" name="note_description"  value="{{ note.note_description }}">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" id="is_archive" type="checkbox" name="is_archive" {% if note.is_archive %} checked {% endif %}>
+                <label class="form-check-label" for="is_archive">
+                    Архив
+                </label>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

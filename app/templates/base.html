@@ -24,7 +24,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-8"><h2>Notes</h2></div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 float-end">
                     
                     <a href="{{ url_for('add_note') }}">
                         <button type="button" class="btn btn-info add-new"><i class="bi bi-plus-lg"></i> Add New</button>
@@ -37,7 +37,8 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Title</th>
-            <th scope="col">Full name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Archive</th>
             <th scope="col">Action</th>
         </tr>
     </thead>
@@ -50,7 +51,14 @@
             <td>
                 <a class="link-opacity-100" method="POST" href="/update_note/{{ note.id }}">{{ note.title }}</a> 
             </td>
-            <td>{{ note.full_name }}</td>
+            <td>{{ note.note_description }}</td>
+            <td>
+                {% if note.is_archive %}
+                    <i class="bi bi-archive-fill"></i>
+                {% else %}
+                    <i class="bi bi-archive"></i>
+                {% endif %}
+            </td>
             <td>
                 
                 <a class="edit" method="POST" href="/update_note/{{ note.id }}" title="" data-toggle="tooltip" data-original-title="Edit"><i class="bi bi-pencil"></i></a>

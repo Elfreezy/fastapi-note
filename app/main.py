@@ -33,9 +33,9 @@ def add_note(request: Request):
 
 
 @app.post('/add_note')
-def add_note(request: Request, title: str = Form(...), full_name: str = Form(...)):
+def add_note(request: Request, title: str = Form(...), note_description: str = Form(...)):
     try:
-        note_schema = NoteSchema(title=title, full_name=full_name)
+        note_schema = NoteSchema(title=title, note_description=note_description)
         note_service.add_note(note_schema)
 
         return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
@@ -54,9 +54,12 @@ def update_note(request: Request, id:int):
     return response
 
 @app.post('/update_note/{id}')
-def update_note(id: int, title: str = Form(...), full_name: str = Form(...)):
+def update_note(id: int, title: str = Form(...), note_description: str = Form(...), is_archive: bool = Form(None)):
     try:
-        note = NoteSchema(title=title, full_name=full_name)
+        note = NoteSchema(title=title, note_description=note_description)
+        if is_archive:
+            note.is_archive = is_archive
+
         note_service.update_note(id, note)
 
         return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
