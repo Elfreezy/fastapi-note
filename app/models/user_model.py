@@ -2,7 +2,8 @@ import jwt
 from pwdlib import PasswordHash
 from datetime import timedelta, datetime, timezone
 from sqlalchemy import String, Integer, Boolean
-from sqlalchemy.orm import mapped_column, Mapped
+from typing import List
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 from fastapi import HTTPException, status
 
 from config import settings
@@ -17,6 +18,8 @@ class UserModel(BaseModel):
     username: Mapped[str] = mapped_column(String(150), unique=True)
     password_hash: Mapped[str] = mapped_column(String(300))
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    notes: Mapped[List["NoteModel"]] = relationship(back_populates="user")
 
     def create_password_hash(self, password) -> None:
         self.password_hash = PasswordHashObject.hash(password=password)
@@ -38,11 +41,6 @@ class UserModel(BaseModel):
 
     def __repr__(self):
         return f"id:{self.id}, username:{self.username}, is_admin:{self.is_admin}"
-
-
-# class Token(BaseModel):
-#     access_token: str 
-#     token_type: str
 
 
 

@@ -1,6 +1,7 @@
 
 from app.repositories.note_repository import note_repository
 from app.models.note_model import NoteModel
+from app.models.user_model import UserModel
 from app.schemas.note_schema import NoteSchema
 
 class NoteService():
@@ -9,18 +10,22 @@ class NoteService():
     
     def get_note_all(self):
         return self.repositoty.get_note_all()
+
+    def get_note_by_user(self, user: UserModel) -> None | list:
+        return self.repositoty.get_note_by_user(user.id)
     
-    def add_note(self, note_schema):
+    def add_note(self, note_schema: NoteSchema, user: UserModel) -> None:
         note = NoteModel(title=note_schema.title, note_description=note_schema.note_description)
+        note.user = user
         note_repository.add_note(note)
 
-    def delete_note(self, id: int):
+    def delete_note(self, id: int) -> None:
         note_repository.delete_note(id)
 
-    def update_note(self, id: int, update_data: NoteSchema):
+    def update_note(self, id: int, update_data: NoteSchema) -> None:
         note_repository.update_note(id, update_data)
 
-    def get_note_by_id(self, id: int) -> NoteModel:
+    def get_note_by_id(self, id: int) -> None | NoteModel:
         return note_repository.get_note_by_id(id)
 
 note_service = NoteService(note_repository)

@@ -7,7 +7,7 @@ from app.models.user_model import UserModel
 from app.services.user_service import user_service
 
 user_routes = APIRouter(prefix="/users")
-templates = Jinja2Templates(directory="app/templates/users")
+templates = Jinja2Templates(directory="app/templates")
 
 @user_routes.get("/")
 async def root():
@@ -16,7 +16,7 @@ async def root():
 @user_routes.get("/add_user/")
 async def add_user(request: Request):
     context = {"request": request}
-    response = templates.TemplateResponse("register_user.html", context=context)
+    response = templates.TemplateResponse("users/register_user.html", context=context)
     return response
 
 
@@ -33,7 +33,7 @@ async def add_user(request: Request):
 @user_routes.get('/login')
 async def login_user(request: Request):
     context = {"request": request}
-    response = templates.TemplateResponse("login_user.html", context=context)
+    response = templates.TemplateResponse("users/login_user.html", context=context)
     return response
 
 @user_routes.post('/login')
@@ -60,18 +60,19 @@ async def get_user_all(request: Request):
     if users:
         context["users"] = users
 
-    response = templates.TemplateResponse("users.html", context=context)
+    response = templates.TemplateResponse("users/users.html", context=context)
     return response
 
 @user_routes.get("/me/")
 async def get_me(request: Request, current_user: UserModel = Depends(user_service.get_current_user)):
     context = {"request": request, "user": current_user}
-    response = templates.TemplateResponse("user.html", context=context)
+    response = templates.TemplateResponse("users/user.html", context=context)
     return response
 
 @user_routes.get("/logout/")
-async def logout_user(request: Request, current_user: UserModel = Depends(user_service.get_current_user)):
+async def logout_user(request: Request):
     response = RedirectResponse(request.url_for("login_user"), status_code=status.HTTP_302_FOUND)
     response.delete_cookie("access_token")
+    print(response)
     return response
 

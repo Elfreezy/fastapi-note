@@ -1,4 +1,5 @@
 import jwt
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from config import settings
 
 from fastapi import HTTPException, status, Request
@@ -51,13 +52,17 @@ class UserService():
         if not token:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пользователь не авторизован")
         
-        payload = jwt.decode(token, key=settings.SECRET_KEY, algorithms=settings.ALGORITHM)
-        username = payload.get("sub")
-        if username:
-            user = user_service.get_user_by_username(username=username)
+        try:
+            payload = jwt.decode(token, key=settings.SECRET_KEY, algorithms=settings.ALGORITHM)
+            username = payload.get("sub")
+            if username:
+                user = user_service.get_user_by_username(username=username)
 
-            if not user:
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пользователь не найден")
+                if not user:
+                    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пользователь не найден")
+        except InvalidTokenError as e:
+            print(e)
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пользователь не авторизован")
             
         return user
 

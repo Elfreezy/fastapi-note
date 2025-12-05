@@ -26,6 +26,13 @@ class NoteRepository():
         
         return note
     
+    def get_note_by_user(self, user_id: int) -> None | list:
+        notes = None 
+        with Session() as session:
+            statement = select(NoteModel).where(NoteModel.user_id == user_id)
+            notes = session.scalars(statement=statement).all()
+        return notes
+    
     def delete_note(self, id: int) -> None:
         with Session() as session:
             statement = delete(NoteModel).where(NoteModel.id == id)
