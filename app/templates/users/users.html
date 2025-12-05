@@ -1,0 +1,33 @@
+{% extends "base_user.html" %}
+
+{% block content %}
+    <div class="table w-50 mx-auto">
+        <table class="table table-striped">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Users</h2></div>
+                </div>
+            </div>
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+            </tr>
+        </thead>
+
+        {% if users %}
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <th scope="row">{{ user.id }}</th>
+                <td>
+                    {{ user.username }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}   
+        </table>
+
+    </div>
+{% endblock %}
